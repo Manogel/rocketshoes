@@ -30,10 +30,13 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+    border: 0;
   }
+
   li {
     list-style: none;
   }
+
   a {
     text-decoration: none;
   }
