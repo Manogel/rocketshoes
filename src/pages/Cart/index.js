@@ -7,10 +7,19 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { CartTypes } from '../../store/ducks/cart';
 import { Container, ProductTable, Total } from './styles';
+import { formatPrice } from '../../util/format';
 
 export default function Cart() {
   const dispatch = useDispatch();
-  const cart = useSelector(state => state.cart.data);
+  const cart = useSelector(state => state.cart.data).map(product => ({
+    ...product,
+    subtotal: formatPrice(product.price * product.amount),
+  }));
+
+  const total = useSelector(state => state.cart.data).reduce(
+    (amount, product) => amount + product.price * product.amount,
+    0
+  );
 
   function handleDeleteItem(id) {
     dispatch({
@@ -69,7 +78,7 @@ export default function Cart() {
                 </div>
               </td>
               <td>
-                <strong>R$258,80</strong>
+                <strong>{product.subtotal}</strong>
               </td>
               <td>
                 <button
@@ -87,7 +96,7 @@ export default function Cart() {
         <button type="button"> Finalizar Pedido </button>
         <Total>
           <span>TOTAL</span>
-          <strong>R$1920,28</strong>
+          <strong>{formatPrice(total)}</strong>
         </Total>
       </footer>
     </Container>
