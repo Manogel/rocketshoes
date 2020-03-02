@@ -1,13 +1,16 @@
 import { call, put, select } from 'redux-saga/effects';
 import Immutable from 'seamless-immutable';
 import CartActions from '../ducks/cart';
+import api from '../../services/api';
 
-export function* handleAddToCard({ product }) {
+export function* handleAddToCard({ id }) {
   try {
+    const response = yield call(api.get, `/products/${id}`);
+
     const data = yield select(state => state.cart.data);
 
     let muttedData = data;
-    const productIndex = data.findIndex(p => p.id === product.id);
+    const productIndex = data.findIndex(p => p.id === id);
 
     if (productIndex >= 0) {
       muttedData = Immutable.set(data, productIndex, {
@@ -18,7 +21,7 @@ export function* handleAddToCard({ product }) {
       muttedData = [
         ...muttedData,
         {
-          ...product,
+          ...response.data,
           amount: 1,
         },
       ];

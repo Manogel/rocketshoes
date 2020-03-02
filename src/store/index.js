@@ -18,7 +18,7 @@ middlewares.push(sagaMiddleware);
 const composer =
   process.env.NODE_ENV === 'development'
     ? compose(applyMiddleware(...middlewares), console.tron.createEnhancer())
-    : compose(applyMiddleware(...middlewares));
+    : applyMiddleware(...middlewares);
 
 const store = createStore(reducers, composer);
 

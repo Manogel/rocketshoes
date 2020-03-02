@@ -23,10 +23,10 @@ export default function Home() {
     });
   }, []);
 
-  function handleAddProduct(product) {
+  function handleAddProduct(id) {
     dispatch({
       type: CartTypes.ADD_TO_CART_REQUEST,
-      product,
+      id,
     });
   }
 
@@ -44,7 +44,7 @@ export default function Home() {
           <img src={product.image} alt={product.title} />
           <strong>{product.title}</strong>
           <span>{product.priceFormatted}</span>
-          <button type="button" onClick={() => handleAddProduct(product)}>
+          <button type="button" onClick={() => handleAddProduct(product.id)}>
             <div>
               <MdAddShoppingCart size={16} color="#fff" />{' '}
               {amount[product.id] || 0}
