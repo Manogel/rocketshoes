@@ -5,12 +5,19 @@ import {
   MdDelete,
 } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { CartTypes } from '../../store/ducks/cart';
 import { Container, ProductTable, Total } from './styles';
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart.data);
+
+  function handleDeleteItem(id) {
+    dispatch({
+      type: CartTypes.REMOVE_TO_CART_REQUEST,
+      id,
+    });
+  }
 
   return (
     <Container>
@@ -49,7 +56,10 @@ export default function Cart() {
                 <strong>R$258,80</strong>
               </td>
               <td>
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() => handleDeleteItem(product.id)}
+                >
                   <MdDelete size={20} color="#7159c1" />
                 </button>
               </td>
