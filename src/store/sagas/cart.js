@@ -43,3 +43,18 @@ export function* removeFromCard({ id }) {
     yield put(CartActions.addToCartFailure(err));
   }
 }
+
+export function* updateAmount({ id, amount }) {
+  try {
+    if (amount <= 0) return;
+
+    const data = yield select(state => state.cart.data);
+
+    const muttedData = data.map(p => (p.id === id ? { ...p, amount } : p));
+
+    yield put(CartActions.addToCartSuccess(muttedData));
+  } catch (err) {
+    alert('Ocorreu um erro ao processar seus dados!');
+    yield put(CartActions.addToCartFailure(err));
+  }
+}
