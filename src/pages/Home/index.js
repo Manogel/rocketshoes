@@ -9,6 +9,13 @@ import { CartTypes } from '../../store/ducks/cart';
 export default function Home() {
   const dispatch = useDispatch();
   const [products, setProducts] = useState(null);
+  const amount = useSelector(state => state.cart.data).reduce(
+    (amount, product) => {
+      amount[product.id] = product.amount;
+      return amount;
+    },
+    {}
+  );
 
   useEffect(() => {
     api.get('/products').then(response => {
@@ -39,7 +46,8 @@ export default function Home() {
           <span>{product.priceFormatted}</span>
           <button type="button" onClick={() => handleAddProduct(product)}>
             <div>
-              <MdAddShoppingCart size={16} color="#fff" /> 3
+              <MdAddShoppingCart size={16} color="#fff" />{' '}
+              {amount[product.id] || 0}
             </div>
             <span>Adicionar ao carrinho</span>
           </button>
