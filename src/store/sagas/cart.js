@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import CartActions from '../ducks/cart';
 import api from '../../services/api';
 import { formatPrice } from '../../util/format';
+import history from '../../services/history';
 
 export function* handleAddToCard({ id }) {
   try {
@@ -43,6 +44,7 @@ export function* handleAddToCard({ id }) {
     }
 
     yield put(CartActions.addToCartSuccess(muttedData));
+    history.push('/cart');
   } catch (err) {
     alert('Ocorreu um erro ao processar seus dados!');
     yield put(CartActions.addToCartFailure(err));
