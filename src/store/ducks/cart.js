@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable';
 
 const { Types, Creators } = createActions({
   actionType: ['dataPassed'],
-  addToCartRequest: [],
+  addToCartRequest: ['id'],
   addToCartSuccess: ['data'],
   addToCartFailure: ['error'],
   removeToCartRequest: [],

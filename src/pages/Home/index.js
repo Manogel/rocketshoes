@@ -4,7 +4,7 @@ import { MdAddShoppingCart } from 'react-icons/md';
 import { Container } from './styles';
 import api from '../../services/api';
 import { formatPrice } from '../../util/format';
-import { CartTypes } from '../../store/ducks/cart';
+import CartActions, { CartTypes } from '../../store/ducks/cart';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -24,10 +24,12 @@ export default function Home() {
   }, []);
 
   function handleAddProduct(id) {
-    dispatch({
+    /* dispatch({
       type: CartTypes.ADD_TO_CART_REQUEST,
       id,
-    });
+    }); */
+
+    dispatch(CartActions.addToCartRequest(id));
   }
 
   const formatData = useMemo(() => {
