@@ -2,6 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 import Immutable from 'seamless-immutable';
 import CartActions from '../ducks/cart';
 import api from '../../services/api';
+import { formatPrice } from '../../util/format';
 
 export function* handleAddToCard({ id }) {
   try {
@@ -9,20 +10,33 @@ export function* handleAddToCard({ id }) {
 
     const data = yield select(state => state.cart.data);
 
+    const stock = yield call(api.get, `/stock/${id}`);
+
+    const stockAmount = stock.data.amount;
+
     let muttedData = data;
     const productIndex = data.findIndex(p => p.id === id);
+
+    const currentAmount = productIndex >= 0 ? data[productIndex].amount : 0;
+    const amount = currentAmount + 1;
+
+    if (amount > stockAmount) {
+      console.tron.warn('erro');
+      return;
+    }
 
     if (productIndex >= 0) {
       muttedData = Immutable.set(data, productIndex, {
         ...data[productIndex],
-        amount: data[productIndex].amount + 1,
+        amount,
       });
     } else {
       muttedData = [
         ...muttedData,
         {
           ...response.data,
-          amount: 1,
+          amount,
+          priceFormatted: formatPrice(response.data.price),
         },
       ];
     }
