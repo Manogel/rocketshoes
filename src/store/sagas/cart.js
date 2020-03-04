@@ -68,6 +68,15 @@ export function* updateAmount({ id, amount }) {
 
     const data = yield select(state => state.cart.data);
 
+    const stock = yield call(api.get, `/stock/${id}`);
+
+    const stockAmount = stock.data.amount;
+
+    if (amount > stockAmount) {
+      toast.error('Quantidade solicitada fora de estoque!');
+      return;
+    }
+
     const muttedData = data.map(p => (p.id === id ? { ...p, amount } : p));
 
     yield put(CartActions.addToCartSuccess(muttedData));
